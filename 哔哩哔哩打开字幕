@@ -1,0 +1,15 @@
+// ==UserScript==
+// @name         哔哩哔哩打开字幕脚本
+// @namespace    https://bbs.tampermonkey.net.cn/
+// @version      0.1.0
+// @description  try to take over the world!
+// @author       You
+// @match        https://www.bilibili.com/video/*
+// ==/UserScript==
+
+const timer=setInterval(()=>{
+    if(document.querySelector(".bpx-player-control-bottom-right:has(*)")){
+        clearInterval(timer)
+        document.querySelector("[aria-label='字幕'] span")?.click()
+    }
+},500)
