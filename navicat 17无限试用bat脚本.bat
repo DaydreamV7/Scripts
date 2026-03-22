@@ -1,23 +1,17 @@
 @echo off
-set dn=Info
-set dn2=ShellFolder
-set rp=HKEY_CURRENT_USER\Software\Classes\CLSID
-:: reg delete HKEY_CURRENT_USER\Software\PremiumSoft\NavicatPremium\Registration14XCS /f  %针对<strong><font color="#FF0000">navicat</font></strong>15%
-reg delete HKEY_CURRENT_USER\Software\PremiumSoft\NavicatPremium\Registration17XCS /f
-reg delete HKEY_CURRENT_USER\Software\PremiumSoft\NavicatPremium\Update /f
-echo finding.....
-for /f "tokens=*" %%a in ('reg query "%rp%"') do (
- echo %%a
-for /f "tokens=*" %%l in ('reg query "%%a" /f "%dn%" /s /e ^|findstr /i "%dn%"') do (
-  echo deleteing: %%a
-  reg delete %%a /f
+echo 正在重置Navicat 17试用期...
+echo.
+
+REM 1. 删除Navicat 17注册表项
+reg delete "HKEY_CURRENT_USER\Software\PremiumSoft\NavicatPremium\Registration17XCS" /f 2>nul
+reg delete "HKEY_CURRENT_USER\Software\PremiumSoft\NavicatPremium\Update" /f 2>nul
+
+REM 2. 使用单次查询直接删除所有相关CLSID项
+for /f "tokens=*" %%a in ('reg query "HKEY_CURRENT_USER\Software\Classes\CLSID" /s ^| findstr /i "\\Info𝑆ℎ𝑒𝑙𝑙𝐹𝑜𝑙𝑑𝑒𝑟
+"') do (
+reg delete "%%a" /f 2>nul
 )
-for /f "tokens=*" %%l in ('reg query "%%a" /f "%dn2%" /s /e ^|findstr /i "%dn2%"') do (
-  echo deleteing: %%a
-  reg delete %%a /f
-)
-)
-echo re trial done!
-  
+
+echo 操作完成！
+echo 请重启Navicat 17开始新的试用期
 pause
-exit
